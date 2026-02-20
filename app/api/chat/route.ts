@@ -27,7 +27,7 @@ function cleanTitle(t: string): string {
         .replace(/\(\d{4}\)/, "")
         .replace(/movie|film/gi, "")
         .trim();
-}
+};
 
 function extractTitle(q: string): string {
     const quoted = q.match(/["“](.+?)["”]/);
@@ -37,7 +37,7 @@ function extractTitle(q: string): string {
     if (review) return cleanTitle(review[1]);
 
     return cleanTitle(q);
-}
+};
 
 function extractCompareTitles(q: string): string[] {
     const quoted = q.match(/["“](.+?)["”]\s*(with|vs|versus)\s*["“](.+?)["”]/i);
@@ -47,7 +47,7 @@ function extractCompareTitles(q: string): string[] {
     if (!m) return [];
 
     return [cleanTitle(m[1]), cleanTitle(m[3])];
-}
+};
 
 function detectCount(q: string): number {
     q = q.toLowerCase();
@@ -56,7 +56,7 @@ function detectCount(q: string): number {
     if (/\b(1|one|a|an|movie)\b/.test(q)) return 1;
 
     return 2; // default
-}
+};
 
 function detectMode(
     question: string,
@@ -85,7 +85,7 @@ function detectMode(
 
     // 4. Default: assume user refers to 1 movie entity
     return "single";
-}
+};
 
 /* =========================
    API
@@ -243,4 +243,8 @@ export async function POST(req: Request) {
             { status: 500 },
         );
     }
+};
+
+export async function OPTIONS() {
+    return NextResponse.json({}, { status: 200 });
 };

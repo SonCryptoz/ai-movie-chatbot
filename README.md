@@ -11,8 +11,7 @@
 
 **Hệ thống tìm kiếm và gợi ý phim thông minh ứng dụng kiến trúc Retrieval-Augmented Generation (RAG)**
 <br />
-🌐 [Xem Demo](https://your-domain.vercel.app)
-🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
+🌐 [Xem Demo](https://ai-movie-chatbot-brbqeykpq-soncryptozs-projects.vercel.app/) - 🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
 </div>
 
 ## 📖 Giới thiệu

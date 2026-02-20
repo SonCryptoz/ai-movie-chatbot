@@ -34,8 +34,12 @@ const ChatPage = () => {
                     body: JSON.stringify({ question: text }),
                 });
 
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text || "Server error");
+                }
+
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Server error");
 
                 const movies: Movie[] = data.compare || [];
                 const recs = data.recommendations || [];
