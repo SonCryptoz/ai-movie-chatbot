@@ -113,7 +113,7 @@ create table public.movie_embeddings (
   id bigint not null,
   title text null,
   content text null,
-  embedding public.vector null,
+  embedding vector(384) null,
   year integer null,
   rating double precision null,
   genres text[] null,

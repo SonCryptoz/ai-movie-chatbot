@@ -1,4 +1,15 @@
-import { pipeline, type FeatureExtractionPipeline } from "@xenova/transformers";
+import {
+    pipeline,
+    env,
+    type FeatureExtractionPipeline,
+} from "@xenova/transformers";
+
+// dùng WASM backend (tránh libonnxruntime.so)
+env.backends.onnx.wasm.wasmPaths =
+    "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
+env.backends.onnx.wasm.numThreads = 1; // quan trọng cho serverless
+env.allowLocalModels = false;
+env.useBrowserCache = false;
 
 let embedder: FeatureExtractionPipeline | null = null;
 let loadingPromise: Promise<FeatureExtractionPipeline> | null = null;
