@@ -1,65 +1,143 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Sparkles, PlayCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+import { useChatStore } from "@/store/use-chat-store";
 import Image from "next/image";
 
+const PROMPTS = [
+    "Find a family movie",
+    "Show me an animation movie",
+    "Compare Inception vs Interstellar",
+    "Best movie about animals",
+];
+
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    const router = useRouter();
+    const setInitialQuestion = useChatStore((s) => s.setInitialQuestion);
+
+    const handlePrompt = (q: string) => {
+        setInitialQuestion(q);
+        router.push("/chat");
+    };
+
+    return (
+        <main className="app-bg relative min-h-screen overflow-hidden bg-base-100 text-base-content">
+            {/* BACKGROUND GLOW*/}
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-secondary/10 to-accent/10 blur-3xl" />
+
+            {/* POSTER STRIP */}
+            <motion.div
+                initial={{ opacity: 0, y: -40 }}
+                animate={{ opacity: 0.1, y: 0 }}
+                transition={{ duration: 1.2 }}
+                className="absolute -top-24 left-1/2 -translate-x-1/2 flex gap-6 rotate-6"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+                {Array.from({ length: 9 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="h-64 w-40 rounded-xl bg-primary shadow-xl"
+                    />
+                ))}
+            </motion.div>
+
+            {/* CONTENT */}
+            <motion.section
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+                {/* LOGO */}
+                <motion.div
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="mb-6 rounded-full bg-base-200 p-5 shadow-xl"
+                >
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={48}
+                        height={48}
+                        className="object-contain"
+                    />
+                </motion.div>
+
+                {/* TITLE */}
+                <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight">
+                    <span className="block bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        AI Movie Chatbot
+                    </span>
+                </h1>
+
+                {/* TAGLINE */}
+                <p className="mt-4 max-w-xl text-base sm:text-lg md:text-xl opacity-70">
+                    Discover movies, compare them, and get smart recommendations
+                    like a real film critic powered by AI.
+                </p>
+
+                {/* CTA */}
+                <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="mt-10"
+                >
+                    <button
+                        onClick={() =>
+                            handlePrompt("Recommend a top movie in 2022")
+                        }
+                        className="btn btn-primary btn-lg gap-2 shadow-xl"
+                    >
+                        <PlayCircle className="w-5 h-5" />
+                        Start Chatting
+                    </button>
+                </motion.div>
+
+                {/* PROMPTS */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="mt-14"
+                >
+                    <p className="mb-4 flex items-center justify-center gap-1 text-sm opacity-60">
+                        <Sparkles className="w-4 h-4" />
+                        Try these prompts
+                    </p>
+
+                    <div className="flex flex-wrap justify-center gap-3 max-w-xl">
+                        {PROMPTS.map((q) => (
+                            <motion.button
+                                key={q}
+                                whileHover={{ scale: 1.08 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handlePrompt(q)}
+                                className="badge badge-outline badge-lg cursor-pointer hover:bg-base-200 transition backdrop-blur"
+                            >
+                                {q}
+                            </motion.button>
+                        ))}
+                    </div>
+                </motion.div>
+            </motion.section>
+
+            {/* POSTER STRIP */}
+            <motion.div
+                initial={{ opacity: 0, y: -40 }}
+                animate={{ opacity: 0.1, y: 0 }}
+                transition={{ duration: 1.2 }}
+                className="absolute -bottom-24 left-1/2 -translate-x-1/2 flex gap-6 rotate-6"
+            >
+                {Array.from({ length: 9 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="h-64 w-40 rounded-xl bg-secondary shadow-xl"
+                    />
+                ))}
+            </motion.div>
+        </main>
+    );
 }

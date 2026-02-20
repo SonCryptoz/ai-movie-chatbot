@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@plugin "daisyui" {
+    themes: all;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: "Saira", sans-serif;
+}
+
+.app-bg {
+    background-repeat: repeat;
+    opacity: 1;
+}
+
+.app-bg::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("/bg-movie.png");
+    background-repeat: repeat;
+    background-size: 500px;
+    opacity: 0.1;
+    filter: blur(1px);
+    pointer-events: none;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.cube-face {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(0, 255, 255, 0.35);
+    border-radius: 12px;
+    box-shadow: inset 0 0 12px rgba(0, 255, 255, 0.15);
+}
+
+/* Top face */
+.cube-face.top {
+    transform: rotateX(90deg) translateZ(45px);
+    background: linear-gradient(135deg, #0a0a0a, #050505);
+}
+
+/* Front face */
+.cube-face.front {
+    transform: translateZ(45px);
+    background: linear-gradient(135deg, #050505, #0a0a0a);
+}
+
+/* Right face */
+.cube-face.right {
+    transform: rotateY(90deg) translateZ(45px);
+    background: linear-gradient(135deg, #080808, #020202);
 }

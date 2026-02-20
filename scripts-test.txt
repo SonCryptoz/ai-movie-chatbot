@@ -1,0 +1,94 @@
+# =========================
+# BASIC QUERIES (MUST WORK)
+# =========================
+Zootopia
+Recommend an animated movie
+Find a movie about animals
+Show me an animation movie
+Find a family movie
+
+# =========================
+# SEMANTIC SEARCH (MEANING)
+# =========================
+Find an animated movie with a fox
+A movie where animals talk and live like humans
+Movie about animals in a city
+An animation about a fox and a rabbit
+A cartoon with animal characters
+A movie about animals and police
+Movie about animal society
+
+# =========================
+# GENRE BASED
+# =========================
+Recommend a romantic movie
+Recommend a comedy movie
+Recommend a family movie
+Recommend an adventure movie
+Recommend a drama movie
+Recommend a crime movie
+Recommend a movie about friendship
+
+# =========================
+# YEAR BASED
+# =========================
+Recommend an animated movie from 2016
+Find a movie released after 2020
+Show me a movie from 2011
+Find an animated movie from 2024
+
+# =========================
+# RATING BASED
+# =========================
+Recommend a highly rated animated movie
+Find an animation with rating above 7
+Best animated movie
+Top rated family movie
+
+# =========================
+# COMPARISON
+# =========================
+Compare Zootopia with Zootopia 2
+Zootopia vs Zootopia 2
+Which is better, Zootopia or Zootopia 2?
+
+# =========================
+# LONG QUERIES
+# =========================
+I want to find an animated movie about animals that live in a modern city and solve crimes
+Recommend a movie about animals and friendship in a big city
+Find an animation where animals behave like humans
+
+# =========================
+# EDGE CASE (SHOULD FAIL)
+# =========================
+asdfghjkl
+Tell me about dragons in space
+A horror movie with zombies
+Movie about dinosaurs
+Alien invasion movie
+Cyberpunk robots movie
+
+# =========================
+# VIETNAMESE TEST (EXPECTED TO FAIL OR WEAK)
+# =========================
+Phim hoạt hình về động vật
+Gợi ý phim về cáo
+So sánh Zootopia và Zootopia 2
+Phim hoạt hình hay nhất
+Phim về động vật sống trong thành phố
+
+# =========================
+# REAL USER STYLE
+# =========================
+Find an animated movie with fox
+Recommend me a movie about animals
+Find an animal movie for kids
+Suggest an animation movie for family
+I want a movie about animals
+Any good animated movie?
+Give me a short review of "${movie.title}"
+Suggest 3 movies similar to "${movie.title}" (${movie.year}). Prefer ${movie.genres.join(
+            ", ",
+        )} genre, with good ratings.
+Give me a concise review of "${movie.title}" (${movie.year}).

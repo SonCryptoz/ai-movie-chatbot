@@ -1,0 +1,62 @@
+import { create } from "zustand";
+
+export const THEMES = [
+    "light",
+    "dark",
+    "cupcake",
+    "bumblebee",
+    "emerald",
+    "corporate",
+    "synthwave",
+    "retro",
+    "cyberpunk",
+    "valentine",
+    "halloween",
+    "garden",
+    "forest",
+    "aqua",
+    "lofi",
+    "pastel",
+    "fantasy",
+    "wireframe",
+    "black",
+    "luxury",
+    "dracula",
+    "cmyk",
+    "autumn",
+    "business",
+    "acid",
+    "lemonade",
+    "night",
+    "coffee",
+    "winter",
+    "dim",
+    "nord",
+    "sunset",
+    "caramellatte",
+    "abyss",
+    "silk",
+];
+
+interface ThemeStore {
+    theme: string;
+    setTheme: (theme: string) => void;
+    initTheme: () => void;
+}
+
+export const useThemeStore = create<ThemeStore>((set) => ({
+    theme: "dark",
+
+    setTheme: (theme) => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("chat-theme", theme);
+        }
+        set({ theme });
+    },
+    initTheme: () => {
+        if (typeof window !== "undefined") {
+            const stored = localStorage.getItem("chat-theme");
+            if (stored) set({ theme: stored });
+        }
+    },
+}));
