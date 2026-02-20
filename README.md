@@ -1,6 +1,6 @@
 # 🎬 AI Movie Chatbot (RAG)
 
-<div align="left">
+<div align="center">
 
 [![Next.js](https://img.shields.io/badge/Next.js-16+-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -11,7 +11,8 @@
 
 **Hệ thống tìm kiếm và gợi ý phim thông minh ứng dụng kiến trúc Retrieval-Augmented Generation (RAG)**
 <br />
-🌐 [Xem Demo](https://your-domain.vercel.app) · 🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
+🌐 [Xem Demo](https://your-domain.vercel.app)
+🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
 </div>
 
 ## 📖 Giới thiệu

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import DataTablePage from "./data";
 
 export const metadata: Metadata = {
@@ -9,4 +10,12 @@ export const metadata: Metadata = {
     },
 };
 
-export default DataTablePage;
+const Page = () => {
+    return (
+        <Suspense fallback={<div className="p-6">Loading...</div>}>
+            <DataTablePage />
+        </Suspense>
+    );
+};
+
+export default Page;
