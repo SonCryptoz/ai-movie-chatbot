@@ -1,5 +1,3 @@
-export const runtime = "nodejs";
-
 import {
     RetrievedMovie,
     retrieveMovies,
@@ -245,8 +243,4 @@ export async function POST(req: Request) {
             { status: 500 },
         );
     }
-};
-
-export async function OPTIONS() {
-    return NextResponse.json({}, { status: 200 });
 };

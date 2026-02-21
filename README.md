@@ -11,17 +11,13 @@
 
 **Hệ thống tìm kiếm và gợi ý phim thông minh ứng dụng kiến trúc Retrieval-Augmented Generation (RAG)**
 <br />
-🌐 [Xem Demo](https://ai-movie-chatbot-28hdjdnbb-soncryptozs-projects.vercel.app/) - 🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
+🌐 [Xem Demo](https://ai-movie-chatbot-nw4x.onrender.com) - 🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
 </div>
 
 ## 📖 Giới thiệu
 
 **AI Movie Chatbot** là một ứng dụng web hiện đại cho phép người dùng tương tác với dữ liệu điện ảnh thông qua ngôn ngữ tự nhiên. Khác với các chatbot thông thường, dự án này sử dụng kỹ thuật **RAG**, kết hợp sức mạnh lập luận của **Gemini LLM** với cơ sở dữ liệu phim thực tế được lưu trữ dưới dạng **Vector Embeddings** trong Supabase.
 
-### 🎯 Mục tiêu dự án
-- **Thực hành AI + Web App:** Xây dựng sản phẩm hoàn chỉnh từ giao diện đến tích hợp trí tuệ nhân tạo.
-- **Áp dụng RAG:** Giải quyết vấn đề "ảo giác" (hallucination) của AI bằng cách cung cấp ngữ cảnh dữ liệu chính xác.
-- **Showcase kỹ năng:** Trình bày khả năng xử lý Fullstack (Next.js, Supabase) và tích hợp AI API.
 ---
 
 ## ✨ Tính năng chính
@@ -103,7 +99,7 @@ SUPABASE_PRJ_PASSWORD=your_password
 
 TMDB_API_KEY=your_tmdb_key
 
-NEXT_PUBLIC_BASE_URL=your_app_url
+NEXT_PUBLIC_BASE_URL=your_app_url (Render)
 ```
 
 ### Thiết lập Database (Supabase)
@@ -215,6 +211,18 @@ npm run dev
 ```bash
 http://localhost:3000
 ```
+---
+
+## ⚠️ Hạn chế (Free Tier)
+
+Ứng dụng hiện được triển khai trên hạ tầng miễn phí (Render Free Tier – 0.1 CPU, 512MB RAM).
+Do giới hạn tài nguyên, hệ thống có thể gặp một số vấn đề sau:
+- Thời gian tải mô hình embedding khá lâu (cold start).
+- Với các câu hỏi phức tạp (so sánh phim, gợi ý nhiều phim), phản hồi từ mô hình ngôn ngữ có thể bị cắt ngắn hoặc timeout.
+- Một số truy vấn có thể dẫn đến lỗi parse JSON do phản hồi chưa đầy đủ.
+
+Mục đích triển khai trên Free Tier là để demo và phục vụ mục tiêu học tập, không hướng đến khả năng chịu tải cao.
+
 ---
 
 ## 💡 Ví dụ câu hỏi
