@@ -1,32 +1,38 @@
-import { pipeline, type FeatureExtractionPipeline } from "@xenova/transformers";
+import type { FeatureExtractionPipeline } from "@xenova/transformers";
 
 let embedder: FeatureExtractionPipeline | null = null;
 let loadingPromise: Promise<FeatureExtractionPipeline> | null = null;
 
-/**
- * Load embedding model once (singleton)
- */
 async function getEmbedder(): Promise<FeatureExtractionPipeline> {
     if (embedder) return embedder;
 
     if (!loadingPromise) {
-        console.log("🔄 Loading embedding model...");
-        loadingPromise = pipeline(
-            "feature-extraction",
-            "Xenova/all-MiniLM-L6-v2",
-        ) as Promise<FeatureExtractionPipeline>;
+        loadingPromise = (async () => {
+            process.env.TRANSFORMERS_BACKEND = "wasm";
+
+            const { pipeline, env } = await import("@xenova/transformers");
+
+            env.backends.onnx.wasm.wasmPaths =
+                "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
+            env.backends.onnx.wasm.numThreads = 1;
+            env.allowLocalModels = false;
+            env.useBrowserCache = false;
+
+            console.log("🔄 Loading embedding model...");
+            return await pipeline(
+                "feature-extraction",
+                "Xenova/all-MiniLM-L6-v2",
+            );
+        })();
     }
 
     embedder = await loadingPromise;
     return embedder;
 }
 
-/**
- * Embed a single text
- */
+/** Embed 1 câu */
 export async function embedText(text: string): Promise<number[]> {
     const model = await getEmbedder();
-
     const output = await model(text, {
         pooling: "mean",
         normalize: true,
@@ -35,14 +41,11 @@ export async function embedText(text: string): Promise<number[]> {
     return Array.from(output.data as Float32Array);
 }
 
-/**
- * Embed multiple texts (batch)
- */
+/** Embed nhiều câu */
 export async function embedBatch(texts: string[]): Promise<number[][]> {
     if (texts.length === 0) return [];
 
     const model = await getEmbedder();
-
     const output = await model(texts, {
         pooling: "mean",
         normalize: true,
@@ -56,7 +59,6 @@ export async function embedBatch(texts: string[]): Promise<number[][]> {
     }
 
     const vectors: number[][] = [];
-
     for (let i = 0; i < texts.length; i++) {
         vectors.push(Array.from(data.slice(i * dim, (i + 1) * dim)));
     }
