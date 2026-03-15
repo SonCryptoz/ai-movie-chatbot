@@ -278,19 +278,15 @@ Best movie about animals
 
 ## 🧭 Hướng phát triển
 
-💾 Lưu lịch sử chat theo người dùng
-**Cho phép mỗi user có lịch sử hội thoại riêng, đồng bộ giữa nhiều thiết bị.**
+💾 **Lưu lịch sử chat theo người dùng:** Cho phép mỗi user có lịch sử hội thoại riêng, đồng bộ giữa nhiều thiết bị.
 
-🔐 Hệ thống đăng nhập / đăng ký
-**Xác thực bằng email, OAuth (Google, GitHub), hoặc Supabase Auth.**
+🔐 **Hệ thống đăng nhập / đăng ký:** Xác thực bằng email, OAuth (Google, GitHub), hoặc Supabase Auth.
 
-🗃️ Mở rộng nguồn dữ liệu phim
-**Kết hợp nhiều API (TMDB, IMDb, Wikipedia, Review sites) để tăng độ chính xác.**
+🗃️ **Mở rộng nguồn dữ liệu phim:** Kết hợp nhiều API (TMDB, IMDb, Wikipedia, Review sites) để tăng độ chính xác.
 
-🌍 Hỗ trợ đa ngôn ngữ
-**Cho phép người dùng chat và nhận kết quả bằng nhiều ngôn ngữ khác nhau.**
+🌍 **Hỗ trợ đa ngôn ngữ:** Cho phép người dùng chat và nhận kết quả bằng nhiều ngôn ngữ khác nhau.
 
-🎯 Cá nhân hóa gợi ý phim
+🎯 **Cá nhân hóa gợi ý phim:**
 
         Lịch sử chat
 
