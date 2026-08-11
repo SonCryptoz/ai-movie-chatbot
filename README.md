@@ -1,4 +1,4 @@
-# 🎬 AI Movie Chatbot (RAG)
+# AI Movie Chatbot
 
 <div align="center">
 
@@ -9,100 +9,125 @@
 [![Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-**Hệ thống tìm kiếm và gợi ý phim thông minh ứng dụng kiến trúc Retrieval-Augmented Generation (RAG)**
+**Ứng dụng chatbot phim sử dụng Retrieval-Augmented Generation (RAG)**
 <br />
-🌐 [Xem Demo](https://ai-movie-chatbot-nw4x.onrender.com) - 🐞 [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
+[Demo](https://ai-movie-chatbot-nw4x.onrender.com) - [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
 </div>
 
-## 📖 Giới thiệu
+## Giới thiệu
 
-**AI Movie Chatbot** là một ứng dụng web hiện đại cho phép người dùng tương tác với dữ liệu điện ảnh thông qua ngôn ngữ tự nhiên. Khác với các chatbot thông thường, dự án này sử dụng kỹ thuật **RAG**, kết hợp sức mạnh lập luận của **Gemini LLM** với cơ sở dữ liệu phim thực tế được lưu trữ dưới dạng **Vector Embeddings** trong Supabase.
+**AI Movie Chatbot** là ứng dụng web cho phép người dùng tìm kiếm, so sánh và nhận gợi ý phim thông qua ngôn ngữ tự nhiên.
 
----
+Thay vì chỉ gửi câu hỏi trực tiếp đến mô hình ngôn ngữ, ứng dụng sử dụng kiến trúc **Retrieval-Augmented Generation (RAG)** để tìm kiếm thông tin phim liên quan từ cơ sở dữ liệu trước khi tạo câu trả lời.
 
-## ✨ Tính năng chính
+Dữ liệu phim được chuyển thành **vector embeddings** và lưu trữ trong **Supabase PostgreSQL với pgvector**. Khi người dùng gửi câu hỏi, hệ thống tạo embedding cho truy vấn, thực hiện tìm kiếm tương đồng vector và đưa các kết quả phù hợp vào context của **Gemini LLM** để tạo câu trả lời.
 
-- 🔍 **Tìm kiếm ngữ nghĩa (Semantic Search):** Tìm phim dựa trên ý nghĩa câu hỏi.
-- 🤖 **Gợi ý phim AI:** Đề xuất danh sách phim dựa trên ngữ cảnh cuộc trò chuyện và sở thích cá nhân.
-- ⚖️ **So sánh thông minh:** So sánh nhiều phim cùng lúc với bảng thông số chi tiết và đánh dấu "phim vượt trội".
-- 📊 **Trực quan hóa dữ liệu:** Sử dụng biểu đồ Radar, biểu đồ cột để so sánh Rating và Thể loại.
-- 🎨 **Giao diện đa dạng:** Hỗ trợ thay đổi nhiều Theme (Retro, Dark, Cyberpunk) nhờ DaisyUI.
-- 💬 **Trải nghiệm Chat mượt mà:** Hệ thống gợi ý Prompt thông minh giúp người dùng bắt đầu cuộc hội thoại dễ dàng.
----
+Dự án được xây dựng bằng **Next.js 16 App Router, TypeScript, Supabase, Gemini API và Zustand**.
 
-## 🧠 Kiến trúc hệ thống (RAG Flow)
+## Tính năng
+
+### Tìm kiếm và gợi ý phim
+
+* Tìm kiếm phim bằng ngôn ngữ tự nhiên.
+* Semantic Search dựa trên vector embeddings.
+* Gợi ý phim dựa trên nội dung truy vấn và context cuộc trò chuyện.
+* Lọc kết quả theo thể loại, năm phát hành và rating.
+* Hiển thị thông tin chi tiết của phim.
+
+### So sánh phim
+
+* So sánh nhiều bộ phim trong cùng một giao diện.
+* Hiển thị thông tin như rating, runtime, popularity và thể loại.
+* Sử dụng bảng so sánh để làm nổi bật các tiêu chí giữa các phim.
+* Hỗ trợ AI phân tích và đưa ra nhận xét dựa trên dữ liệu được retrieve.
+
+### Trực quan hóa dữ liệu
+
+* Biểu đồ Radar để so sánh các tiêu chí.
+* Biểu đồ rating và thể loại.
+* Hiển thị dữ liệu phim trực quan bên cạnh nội dung chat.
+
+### Chat UI
+
+* Giao diện chat tương tác.
+* Prompt suggestions giúp người dùng bắt đầu cuộc trò chuyện.
+* Movie panel hiển thị thông tin phim ngay trong giao diện chat.
+* Hỗ trợ nhiều theme thông qua DaisyUI.
+
+## Kiến trúc RAG
+
+Hệ thống được chia thành hai pipeline chính: **offline data preparation** và **online query processing**.
+
 ```mermaid
 graph TD
-    subgraph Offline_Process[Offline - Data Preparation]
-        M[TMDB / Movie Dataset] --> N[Data Cleaning]
-        N --> O[Text Chunking]
-        O --> P[Embedding Model]
-        P --> Q[Supabase Vector DB]
+    subgraph Offline["Offline - Data Preparation"]
+        A[TMDB / Movie Dataset]
+        B[Data Cleaning]
+        C[Text Processing]
+        D[Embedding Model]
+        E[Supabase pgvector]
+
+        A --> B
+        B --> C
+        C --> D
+        D --> E
     end
 
-    subgraph Online_Process[Online - User Query]
-        A[User Query] --> B[Embedding Query]
-        B --> C[Vector Similarity Search]
-        C --> Q
-        Q --> D[Retrieve Relevant Movies]
-        D --> E[Prompt Augmentation]
-        E --> F[Gemini LLM]
-        F --> G[Natural Language Response]
-        G --> H[Chat UI]
+    subgraph Online["Online - Query Processing"]
+        F[User Query]
+        G[Query Embedding]
+        H[Vector Similarity Search]
+        I[Relevant Movies]
+        J[Prompt Context]
+        K[Gemini LLM]
+        L[Natural Language Response]
+        M[Chat UI]
+
+        F --> G
+        G --> H
+        H --> E
+        E --> I
+        I --> J
+        J --> K
+        K --> L
+        L --> M
     end
 ```
----
-## 🛠 Công nghệ sử dụng
 
--  **Next.js 16 (App Router)**
+### RAG Flow
 
--  **TypeScript**
+1. Dữ liệu phim được lấy từ TMDB hoặc dataset nguồn.
+2. Dữ liệu được làm sạch và chuẩn hóa thành nội dung có thể embedding.
+3. Embedding model chuyển nội dung phim thành vector 384 chiều.
+4. Vector và metadata được lưu trong Supabase pgvector.
+5. Khi người dùng gửi câu hỏi, hệ thống tạo embedding cho query.
+6. Supabase thực hiện vector similarity search để tìm các phim liên quan.
+7. Kết quả tìm kiếm được đưa vào prompt context.
+8. Gemini sử dụng context này để tạo câu trả lời.
+9. Kết quả được hiển thị trên giao diện chat.
 
--  **Tailwind CSS + DaisyUI**
+## Công nghệ
 
--  **Zustand** (state management)
+### Frontend
 
--  **Framer Motion** (animation)
+* **Next.js 16 / App Router** – Framework chính cho ứng dụng.
+* **TypeScript** – Static typing.
+* **Tailwind CSS** – Styling và responsive layout.
+* **DaisyUI** – UI components và theme.
+* **Zustand** – Quản lý global state.
+* **Framer Motion** – Animation và UI transitions.
 
--  **Gemini API** (LLM)
+### AI & Data
 
--  **Supabase / Vector DB** (lưu embedding cho RAG)
----
+* **Google Gemini API** – Large Language Model dùng để tạo câu trả lời.
+* **Supabase / PostgreSQL** – Lưu trữ metadata phim và vector embeddings.
+* **pgvector** – Vector similarity search.
+* **Embedding Model** – Chuyển dữ liệu phim và user query thành vector 384 chiều.
+* **TMDB API** – Nguồn dữ liệu phim.
 
-## 🚀 Cài đặt
+## Database
 
-### Clone Project
-
-```bash
-git clone https://github.com/SonCryptoz/ai-movie-chatbot.git
-cd ai-movie-chatbot
-```
-
-### Cài dependencies
-
-```bash
-npm i
-```
-
-### Tạo file môi trường .env.local
-
-```bash
-GEMINI_API_KEY=your_gemini_key
-
-SUPABASE_URL=your_supabase_url
-
-SUPABASE_ANON_KEY=your_anon_key
-
-SUPABASE_SERVICE_ROLE_KEY=your_service_role
-
-SUPABASE_PRJ_PASSWORD=your_password
-
-TMDB_API_KEY=your_tmdb_key
-
-NEXT_PUBLIC_BASE_URL=your_app_url (Render)
-```
-
-### Thiết lập Database (Supabase)
+Bảng chính được sử dụng cho RAG:
 
 ```sql
 create table public.movie_embeddings (
@@ -119,15 +144,29 @@ create table public.movie_embeddings (
   source text null,
   poster_url text null,
   constraint movie_embeddings_pkey primary key (id)
-) TABLESPACE pg_default;
-
-create index IF not exists movie_embeddings_embedding_idx on public.movie_embeddings using ivfflat (embedding vector_cosine_ops)
-with
-  (lists = '100') TABLESPACE pg_default;
-
-create index IF not exists movie_embeddings_poster_url_idx on public.movie_embeddings using btree (poster_url) TABLESPACE pg_default;
+);
 ```
-### Tạo Function tìm kiếm Vector (RAG core)
+
+Vector index được sử dụng để hỗ trợ similarity search:
+
+```sql
+create index if not exists movie_embeddings_embedding_idx
+on public.movie_embeddings
+using ivfflat (embedding vector_cosine_ops)
+with (lists = '100');
+```
+
+Index cho poster URL:
+
+```sql
+create index if not exists movie_embeddings_poster_url_idx
+on public.movie_embeddings
+using btree (poster_url);
+```
+
+## Vector Search Function
+
+Function `match_movies` thực hiện semantic search kết hợp với một số điều kiện lọc metadata.
 
 ```sql
 create or replace function match_movies(
@@ -181,53 +220,91 @@ as $$
 $$;
 ```
 
-### Tạo RLS policy
+Phần `ORDER BY` kết hợp **cosine distance** với rating và popularity để ưu tiên những kết quả vừa có độ tương đồng với query vừa có metadata phù hợp.
 
+## Cài đặt
+
+### 1. Clone repository
+
+```bash
+git clone https://github.com/SonCryptoz/ai-movie-chatbot.git
+cd ai-movie-chatbot
 ```
+
+### 2. Cài dependencies
+
+```bash
+npm install
+```
+
+### 3. Cấu hình environment variables
+
+Tạo file `.env.local`:
+
+```env
+GEMINI_API_KEY=your_gemini_key
+
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role
+
+SUPABASE_PRJ_PASSWORD=your_password
+
+TMDB_API_KEY=your_tmdb_key
+
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+Các secret key chỉ nên được sử dụng ở server-side và không commit vào repository.
+
+### 4. Thiết lập Supabase
+
+Tạo bảng `movie_embeddings` và các index cần thiết bằng SQL ở phần **Database**.
+
+Sau đó tạo RLS policy phù hợp với cách ứng dụng truy cập dữ liệu:
+
+```sql
 create policy "public read"
-on "public"."movie_embeddings"
-as PERMISSIVE
-for SELECT
+on public.movie_embeddings
+as permissive
+for select
 to public
 using (true);
 ```
 
-### Chạy scripts
+Trong môi trường production, policy nên được giới hạn theo yêu cầu bảo mật thực tế thay vì cho phép public read nếu không cần thiết.
+
+### 5. Chuẩn bị dữ liệu
+
+Các script xử lý dữ liệu:
 
 ```bash
-npm run crawl   # Lấy dữ liệu từ TMDB
-npm run embed   # Chuyển đổi mô tả phim sang vector
-npm run ingest  # Đẩy dữ liệu vào Supabase
+npm run crawl
+npm run embed
+npm run ingest
 ```
 
-### Chế độ Development
+Trong đó:
+
+* `crawl` – Thu thập dữ liệu phim.
+* `embed` – Tạo vector embedding.
+* `ingest` – Đưa dữ liệu và embeddings vào Supabase.
+
+### 6. Chạy development server
 
 ```bash
 npm run dev
-```  
+```
 
-### Truy cập
+Truy cập:
 
-```bash
+```text
 http://localhost:3000
 ```
----
 
-## ⚠️ Hạn chế (Free Tier)
+## Ví dụ truy vấn
 
-Ứng dụng hiện được triển khai trên hạ tầng miễn phí (Render Free Tier – 0.1 CPU, 512MB RAM).
-Do giới hạn tài nguyên, hệ thống có thể gặp một số vấn đề sau:
-- Thời gian tải mô hình embedding khá lâu (cold start).
-- Với các câu hỏi phức tạp (so sánh phim, gợi ý nhiều phim), phản hồi từ mô hình ngôn ngữ có thể bị cắt ngắn hoặc timeout.
-- Một số truy vấn có thể dẫn đến lỗi parse JSON do phản hồi chưa đầy đủ.
-
-Mục đích triển khai trên Free Tier là để demo và phục vụ mục tiêu học tập, không hướng đến khả năng chịu tải cao.
-
----
-
-## 💡 Ví dụ câu hỏi
-
-```txt
+```text
 Find a family movie
 
 Show me an animation movie
@@ -235,69 +312,93 @@ Show me an animation movie
 Compare Inception vs Interstellar
 
 Best movie about animals
+
+Recommend some highly rated science fiction movies
+
+Find movies similar to Interstellar
 ```
----
 
-## 📁 Cấu trúc thư mục
+## Cấu trúc thư mục
 
-```txt
-/app
-    /api            # API routes (chat, search, AI handler)
-    /chat           # Trang giao diện chat
-    /data           # Trang hiển thị dữ liệu phim
-    /movie          # Trang chi tiết từng phim (movie/[id])
-    /settings       # Trang cấu hình người dùng
-    globals.css
-    layout.tsx
-    page.tsx
-    theme-provider.tsx
-
-/components
-    /chat           # Component cho UI chat
-    /data           # Component bảng & biểu đồ
-    /movie          # Card, panel, compare table
-    /settings       # Component cài đặt
-    /ui             # Button, modal, input, chart...
-
-/data              # Dataset phim thô và đã xử lý
-/lib               # Helper functions, API clients
-/public            # Static assets (images, icons)
-/scripts           # Crawl, embed, ingest dữ liệu
-/store             # Zustand store (chat, movie panel)
+```text
+ai-movie-chatbot/
+│
+├── app/
+│   ├── api/                    # API routes
+│   ├── chat/                   # Chat page
+│   ├── data/                   # Movie data page
+│   ├── movie/                  # Movie detail pages
+│   │   └── [id]/
+│   ├── settings/               # User settings
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── theme-provider.tsx
+│
+├── components/
+│   ├── chat/                   # Chat components
+│   ├── data/                   # Tables and charts
+│   ├── movie/                  # Movie cards and comparison UI
+│   ├── settings/               # Settings components
+│   └── ui/                     # Shared UI components
+│
+├── data/                       # Raw and processed movie data
+├── lib/                        # Helpers and API clients
+├── public/                     # Static assets
+├── scripts/                    # Crawl, embedding and ingestion scripts
+├── store/                      # Zustand stores
+│
+├── .env.local
+├── next.config.ts
+├── package.json
+└── README.md
 ```
----
 
-## 🎯 Mục tiêu học tập
+## Những gì đã học được
 
-- [x] **RAG:** Triển khai thành công quy trình Retrieval-Augmented Generation.
-- [x] **AI Integration:** Tích hợp Gemini API và tối ưu hóa Prompt Engineering.
-- [x] **Vector Database:** Làm chủ Supabase pgvector để tìm kiếm dữ liệu theo ngữ nghĩa.
-- [x] **Modern Fullstack:** Thành thạo Next.js 16+ (App Router) và quản lý state với Zustand.
-- [x] **Data Visualization:** Trực quan hóa dữ liệu AI thông qua biểu đồ sinh động.
----
+Thông qua dự án này, tôi có cơ hội thực hành:
 
-## 🧭 Hướng phát triển
+* Xây dựng ứng dụng fullstack với Next.js App Router và TypeScript.
+* Thiết kế và triển khai pipeline Retrieval-Augmented Generation.
+* Hiểu cách semantic search hoạt động với vector embeddings.
+* Sử dụng PostgreSQL và pgvector cho vector similarity search.
+* Tích hợp Gemini API vào ứng dụng thực tế.
+* Xây dựng prompt context dựa trên dữ liệu được retrieve.
+* Xử lý và chuẩn bị dataset trước khi embedding.
+* Quản lý global state bằng Zustand.
+* Xây dựng UI tương tác và responsive với Tailwind CSS và DaisyUI.
+* Trực quan hóa dữ liệu phim bằng các loại biểu đồ khác nhau.
+* Tách data preparation pipeline khỏi quá trình xử lý query realtime.
 
-💾 **Lưu lịch sử chat theo người dùng:** Cho phép mỗi user có lịch sử hội thoại riêng, đồng bộ giữa nhiều thiết bị.
+## Hạn chế khi triển khai
 
-🔐 **Hệ thống đăng nhập / đăng ký:** Xác thực bằng email, OAuth (Google, GitHub), hoặc Supabase Auth.
+Phiên bản demo hiện được triển khai trên **Render Free Tier**, vì vậy tài nguyên CPU và RAM bị giới hạn.
 
-🗃️ **Mở rộng nguồn dữ liệu phim:** Kết hợp nhiều API (TMDB, IMDb, Wikipedia, Review sites) để tăng độ chính xác.
+Một số tác động có thể gặp:
 
-🌍 **Hỗ trợ đa ngôn ngữ:** Cho phép người dùng chat và nhận kết quả bằng nhiều ngôn ngữ khác nhau.
+* Cold start khiến thời gian phản hồi ban đầu tăng.
+* Các request cần xử lý nhiều dữ liệu có thể mất nhiều thời gian hơn.
+* Những truy vấn phức tạp như so sánh hoặc recommendation nhiều phim có thể gặp timeout.
+* Việc chạy embedding model trong môi trường tài nguyên thấp có thể ảnh hưởng đến thời gian xử lý.
+* Một số lỗi runtime có thể xảy ra do giới hạn tài nguyên của môi trường deployment.
 
-🎯 **Cá nhân hóa gợi ý phim:**
+Phiên bản hiện tại chủ yếu phục vụ **demo và mục đích học tập**, chưa được tối ưu cho workload production hoặc lượng truy cập lớn.
 
-        Lịch sử chat
+## Hướng phát triển
 
-        Thể loại yêu thích
+Một số hướng có thể mở rộng trong tương lai:
 
-        Rating người dùng
+* Thêm authentication và lưu lịch sử chat theo từng người dùng.
+* Đồng bộ conversation giữa nhiều thiết bị.
+* Mở rộng nguồn dữ liệu từ nhiều nguồn khác nhau.
+* Cải thiện hybrid search bằng cách kết hợp semantic search và keyword search.
+* Cải thiện ranking bằng các tiêu chí metadata và relevance khác nhau.
+* Hỗ trợ đa ngôn ngữ cho query và response.
+* Cá nhân hóa recommendation dựa trên lịch sử tương tác và sở thích của người dùng.
+* Cải thiện caching và inference pipeline để giảm thời gian phản hồi.
+* Chuyển embedding service sang infrastructure riêng khi cần scale.
 
-        Hành vi tương tác
----
-
-## 🙏 Lời cảm ơn
+## Lời cảm ơn
 
 Dự án này sẽ không thể hoàn thiện nếu thiếu sự hỗ trợ từ các công cụ và nền tảng sau:
 
