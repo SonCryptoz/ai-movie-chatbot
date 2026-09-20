@@ -7,10 +7,14 @@ export async function generateMetadata({
 }) {
     const { id } = await params;
 
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/api/movies/${id}`,
-        { cache: "no-store" },
-    );
+    const baseUrl =
+        process.env.RENDER_BACKEND_URL ||
+        process.env.NEXT_PUBLIC_BASE_URL ||
+        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/movies/${id}`, {
+        cache: "no-store",
+    });
 
     if (!res.ok) return { title: "Movie not found" };
 
