@@ -13,8 +13,9 @@ const nextConfig: NextConfig = {
     
     // Chuyển tiếp API từ Vercel sang Render
     async rewrites() {
-        const backendUrl = process.env.RENDER_BACKEND_URL;
-        if (backendUrl) {
+        const rawUrl = process.env.RENDER_BACKEND_URL;
+        if (rawUrl) {
+            const backendUrl = rawUrl.replace(/\/+$/, "");
             return [
                 {
                     source: "/api/:path*",
