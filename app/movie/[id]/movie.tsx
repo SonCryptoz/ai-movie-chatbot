@@ -22,6 +22,21 @@ type Movie = {
 /* ---------------- FETCH ---------------- */
 
 async function getMovie(id: number): Promise<Movie | null> {
+    const rawUrl = process.env.RENDER_BACKEND_URL;
+    if (rawUrl) {
+        const backendUrl = rawUrl.replace(/\/+$/, "");
+        try {
+            const res = await fetch(`${backendUrl}/api/movies/${id}`, {
+                cache: "no-store",
+            });
+            if (!res.ok) return null;
+            return (await res.json()) as Movie;
+        } catch (err) {
+            console.error("❌ Fetch movie from backend error:", err);
+            return null;
+        }
+    }
+
     const { data, error } = await supabase
         .from("movie_embeddings")
         .select("*")
