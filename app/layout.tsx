@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Saira } from "next/font/google";
 
-// @ts-expect-error CSS files are handled by Next.js at build time.
 import "./globals.css";
 import ThemeProvider from "./theme-provider";
 
