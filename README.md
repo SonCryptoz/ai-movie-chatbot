@@ -11,7 +11,7 @@
 
 **Ứng dụng chatbot phim sử dụng Retrieval-Augmented Generation (RAG)**
 <br />
-[Demo](https://ai-movie-chatbot-five.vercel.app) - [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
+[Demo](https://ai-movie-chatbot-ruby.vercel.app) - [Báo Lỗi](https://github.com/SonCryptoz/ai-movie-chatbot/issues)
 </div>
 
 ## Giới thiệu
