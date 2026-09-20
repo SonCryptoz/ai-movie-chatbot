@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    /* config options here */
     images: {
         remotePatterns: [
             {
@@ -10,6 +9,20 @@ const nextConfig: NextConfig = {
                 pathname: "/**",
             },
         ],
+    },
+    
+    // Chuyển tiếp API từ Vercel sang Render
+    async rewrites() {
+        const backendUrl = process.env.RENDER_BACKEND_URL;
+        if (backendUrl) {
+            return [
+                {
+                    source: "/api/:path*",
+                    destination: `${backendUrl}/api/:path*`,
+                },
+            ];
+        }
+        return [];
     },
 };
 

@@ -4,7 +4,8 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
+        "prepare-model": "tsx scripts/prepare-model.ts",
+        "build": "npm run prepare-model && next build",
         "start": "next start",
         "lint": "eslint",
         "crawl": "tsx scripts/crawl-movies.ts",

@@ -1,31 +1,33 @@
 import type { FeatureExtractionPipeline } from "@xenova/transformers";
+import path from "path";
 
 let embedder: FeatureExtractionPipeline | null = null;
 let loadingPromise: Promise<FeatureExtractionPipeline> | null = null;
 
 async function getEmbedder(): Promise<FeatureExtractionPipeline> {
     if (embedder) return embedder;
-
     if (!loadingPromise) {
         loadingPromise = (async () => {
             process.env.TRANSFORMERS_BACKEND = "wasm";
-
             const { pipeline, env } = await import("@xenova/transformers");
 
             env.backends.onnx.wasm.wasmPaths =
                 "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
             env.backends.onnx.wasm.numThreads = 1;
-            env.allowLocalModels = false;
-            env.useBrowserCache = false;
 
-            console.log("🔄 Loading embedding model...");
+            // BẬT tính năng đọc và lưu model từ ổ đĩa
+            env.allowLocalModels = true;
+            env.localModelPath = path.join(process.cwd(), "models");
+            env.cacheDir = path.join(process.cwd(), "models");
+            env.allowRemoteModels = true; // Fallback nếu chưa có sẵn ở local
+            console.log("🔄 Loading embedding model from local disk...");
+
             return await pipeline(
                 "feature-extraction",
                 "Xenova/all-MiniLM-L6-v2",
             );
         })();
     }
-
     embedder = await loadingPromise;
     return embedder;
 }
@@ -64,4 +66,4 @@ export async function embedBatch(texts: string[]): Promise<number[][]> {
     }
 
     return vectors;
-};
+}
