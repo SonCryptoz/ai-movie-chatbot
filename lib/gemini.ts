@@ -1,11 +1,13 @@
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
-if (!GEMINI_API_KEY) throw new Error("Missing GEMINI_API_KEY");
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "placeholder-gemini-api-key";
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export async function askGemini(prompt: string): Promise<string> {
+    if (!process.env.GEMINI_API_KEY) {
+        throw new Error("Missing GEMINI_API_KEY");
+    }
     const model = genAI.getGenerativeModel({
         model: "gemini-2.5-flash",
         generationConfig: {
