@@ -1,4 +1,4 @@
-/* scripts/prepare-model.ts */
+/* scripts/prepare-model.mjs */
 import path from "path";
 
 // If building on Vercel, skip pre-downloading model (Vercel is only for frontend)

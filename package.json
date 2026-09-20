@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "prepare-model": "tsx scripts/prepare-model.ts",
+        "prepare-model": "node scripts/prepare-model.mjs",
         "build": "npm run prepare-model && next build",
         "start": "next start",
         "lint": "eslint",
